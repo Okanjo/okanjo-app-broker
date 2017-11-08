@@ -1,7 +1,7 @@
 {
   "name": "okanjo-app-broker",
   "version": "1.0.0",
-  "description": "Service broker for managing cluster roups",
+  "description": "Service broker for managing cluster groups",
   "main": "OkanjoBroker.js",
   "scripts": {
     "clean": "rm -rf .nyc_output coverage",
