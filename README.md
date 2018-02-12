@@ -33,7 +33,7 @@ const OkanjoWorker = require('okanjo-app-broker/OkanjoWorker');
 const config = {
     apiBroker: {
         workerCount: 1,
-        refreshRate: 0
+        recycleRate: 0
     }
 }
 const app = new OkanjoApp(config);
