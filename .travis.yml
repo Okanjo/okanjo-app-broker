@@ -16,11 +16,11 @@ deploy:
     secure: hRV5bHPnzYy4exONMZZdtsRS1BXD09+OR77xKJl62yUPZNuZMjH8Me+mhbBiztKo0qxWRDroFscG9dQr+3gsofr1hQ2VwkbsA9Jlm8gLNFkmN6ksbhFooQRoayahRQXa35kjG4HZUuv+zh8Tp1f2Xnzp5DqTZ5T2yMV3w6OH0grTQD0rKkk9n4Gyn9YBEm4oInRK+E8S/YBc9vg2pEmWWIlYbTDYfU2aclKdmGSx7aAMa8Sp92sF33mL97pYC2i/rIXr/p1TP6mIAZ/dmEzBAsWYQwUgZCjZdx+uAWe8gFSRhig3U+CeoP7mbVe/jhyLbfbuvE8yBB8K+0C2/huMwWCpcei438bnQDMDVZgbWq3vptj5Vh0WYrE84KUBQU1/p3uHjUteUXVtgF0Ab4pmoM3S7ZnHVmsq9ws/AfF24BpY5SMg+szzqE78M0sWYkLB+fjqglM54UDJsBSAtbB3GVPmz1KSHPJwmEe8OedcOo5PiTNuzdLzxL8o7GcHyG347Xvt+LUYy85Ww4WNSI2msGXWE7JMXf4RgV1g0iG4UsXXgaeaxERvq4jyLLCNJ9+L59HizNdCE19C5f6L0iajENkkBiK2CplL2ZrwRUjHffSjuJ5AJUc1yz0EUjLxc9DXISqCVQdP4aOTVFe/SqNtG6rBqb9B1Csc1UhvySkkTE4=
   bucket: okanjo-docs
   skip_cleanup: true
-  upload-dir: okanjo-app
+  upload-dir: okanjo-app-broker
   acl: public_read
   detect_encoding: true
   default_text_charset: utf-8
   local_dir: deploy
   on:
     branch: master
-    repo: Okanjo/okanjo-app
+    repo: Okanjo/okanjo-app-broker
