@@ -927,6 +927,11 @@ if (cluster.isMaster) {
                 process.env.worker_type.should.be.ok();
             });
 
+            it('should end when told to do so', function (done) {
+                this.timeout(12000);
+                shutdown = done;
+            });
+
             switch (process.env.worker_type) {
                 case 'ops':
                     process.nextTick(function () {
@@ -997,11 +1002,6 @@ if (cluster.isMaster) {
                     ack();
                     break;
             }
-
-            it('should end when told to do so', function (done) {
-                this.timeout(12000);
-                shutdown = done;
-            });
 
         });
     }
