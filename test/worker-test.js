@@ -146,7 +146,6 @@ if (cluster.isMaster) {
             //broker._workerIds.okanjoWorker.should.be.an.Array();
         });
 
-
         it('should spawn an OkanjoWorker and die with SIGINT', function (done) {
 
             this.timeout(5000);
@@ -213,7 +212,6 @@ if (cluster.isMaster) {
             Object.keys(broker._workerIds).length.should.be.exactly(1);
             broker._workerIds.okanjoWorker.should.be.an.Array();
         });
-
 
         it('should spawn an OkanjoWorker and die with SIGTERM', function (done) {
 
@@ -299,8 +297,6 @@ if (cluster.isMaster) {
                 process.env.worker_type.should.be.ok();
             });
 
-
-
             // Make a unit test worker class extension
 
             class UnitTestWorker extends OkanjoBroker.OkanjoWorker {
@@ -333,7 +329,6 @@ if (cluster.isMaster) {
 
             let worker;
 
-
             it('should instantiate', function() {
                 worker = new UnitTestWorker();
 
@@ -355,9 +350,6 @@ if (cluster.isMaster) {
 
         });
 
-        // ============================================================================================================
-
-
     }
 
-        }
+}

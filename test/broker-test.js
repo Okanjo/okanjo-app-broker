@@ -3,7 +3,7 @@ const should = require('should'),
     cluster = require('cluster');
 
 
-const debugEnabled = false; // <---- change this to true if something is blowing up and you need to walk the path
+const debugEnabled = true; // <---- change this to true if something is blowing up and you need to walk the path
 function debug() {
     if (debugEnabled) {
         console.error(Array.from(arguments));
@@ -257,7 +257,6 @@ if (cluster.isMaster) {
 
         });
 
-
         it('should restart worker after crash', function(done) {
 
             /*
@@ -379,7 +378,6 @@ if (cluster.isMaster) {
 
         });
 
-
         it('will force kill a hung worker', function(done) {
 
             this.timeout(12000);
@@ -411,7 +409,10 @@ if (cluster.isMaster) {
                     // Good to go, shut it down
                     state.sentSuicide.should.be.exactly(false);
                     state.sentSuicide = true;
-                    setTimeout(broker.drainWorkers.bind(broker), 10);
+                    setTimeout(() => {
+                        debug('draining workers meow');
+                        broker.drainWorkers();
+                    }, 200);
                 } else {
                     debug('got message from worker', msg, worker);
                     throw new Error('Should not have received this message from worker');
@@ -424,6 +425,7 @@ if (cluster.isMaster) {
             });
 
             broker.on('worker_ended', function(event) {
+                debug('broker: worker_ended');
                 event.should.be.an.Object();
                 state.gotAcknowledgement.should.be.exactly(true);
                 state.sentSuicide.should.be.exactly(true);
@@ -439,7 +441,6 @@ if (cluster.isMaster) {
 
 
         });
-
 
         it('will force kill a worker whos doing network stuff', function(done) {
 
@@ -472,7 +473,10 @@ if (cluster.isMaster) {
                     // Good to go, shut it down
                     state.sentSuicide.should.be.exactly(false);
                     state.sentSuicide = true;
-                    setTimeout(broker.drainWorkers.bind(broker), 10);
+                    process.nextTick(() => {
+                        setTimeout(broker.drainWorkers.bind(broker), 10);
+                    });
+
                 } else {
                     debug('got message from worker', msg, worker);
                     throw new Error('Should not have received this message from worker');
@@ -500,7 +504,6 @@ if (cluster.isMaster) {
 
 
         });
-
 
         it('should receive ops messages', function(done) {
 
@@ -582,7 +585,6 @@ if (cluster.isMaster) {
             broker._workerIds.ops.should.be.an.Array();
 
         });
-
 
         it('should handle multiple brokers simultaneously', function(done) {
 
@@ -679,7 +681,6 @@ if (cluster.isMaster) {
 
         });
 
-
         it('should recycle workers on specified interval', function(done) {
 
             this.timeout(5000);
@@ -773,8 +774,8 @@ if (cluster.isMaster) {
 
         });
 
-
         it('should be able to resume working after draining', function(done) {
+            this.timeout(10000);
 
             const app = new OkanjoApp({}),
                 broker = new OkanjoBroker(app, "recycle", {});
@@ -873,16 +874,11 @@ if (cluster.isMaster) {
 
         });
 
-
-
-
-
     });
 
 } else {
 
     // ============================================================================================================
-
 
     if (process.env.worker_type !== 'okanjoWorker' && process.env.worker_type !== 'okanjoWorkerDelay') {
 
@@ -954,30 +950,36 @@ if (cluster.isMaster) {
 
                         //noinspection JSUnusedLocalSymbols
                         const net = require('net'),
-                            server = net.createServer(function (socket) {
+                            server = net.createServer(function (/*socket*/) {
                                 // connections never end
                                 debug('got local faux server client connection');
                             });
 
                         debug('starting faux worker server');
 
-                        server.listen(11223, function () {
+                        server.listen(function () {
 
-                            debug('started server, hopefully');
-
-                            net.connect({port: 11223}, function () {
+                            debug('started server, hopefully', server.address());
+                            debug('connecting..');
+                            const client = net.createConnection({port: server.address().port}, () => {
                                 debug('connected to local faux server');
+                                ack(); // dont kill us until we got an open socket
                             });
 
-                            debug('did client connect');
+                            client.on('error', (err) => {
+                                debug('got client err', err);
+                            });
 
-                            done();
+                            // done();
+                        });
+
+                        server.on('error', (err) => {
+                            debug('got server err', err);
                         });
 
                         debug('did listen')
                     });
 
-                    ack();
                     break;
 
                 case 'basic':

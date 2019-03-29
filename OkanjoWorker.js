@@ -23,9 +23,9 @@ class OkanjoWorker {
         }
 
         // Handle notifications from master to shutdown
-        process.on('message', (message) => {
+        process.on('message', async (message) => {
             if (message === "suicide") {
-                this.prepareForShutdown();
+                await this.prepareForShutdown();
             }
         });
 
@@ -36,7 +36,7 @@ class OkanjoWorker {
     /**
      * Initialize the worker
      */
-    init() {
+    async init() {
         // This method is intended to be overridden
     }
 
@@ -56,9 +56,8 @@ class OkanjoWorker {
     //noinspection JSUnusedLocalSymbols
     /**
      * Starts the internal shutdown process (hook point)
-     * @param {boolean} canAsync – Whether the shutdown process can do async tasks or if they'll be ignored (e.g. SIGTERM)
      */
-    prepareForShutdown(canAsync) {
+    async prepareForShutdown() {
 
         // This is where you add graceful shutdown handling
         // e.g. this.web.stop(this.shutdown.bind(this));

@@ -20,6 +20,10 @@ npm install okanjo-app-broker
 
 Note: requires the [`okanjo-app`](https://github.com/okanjo/okanjo-app) module.
 
+## Breaking Changes
+ * v2.0.0
+   * Updated base OkanjoWorker methods `init` and `prepareForShutdown` to be async functions
+
 ## Example Usage
 
 Here's a super basic, single file demonstration. 
@@ -152,14 +156,13 @@ Constructs a new instance of a worker.
 * `options` – (optional) Configuration object
   * `options.skipInit` – Don't start the worker when constructed. If truthy, then you must call `worker.init()` to start the worker.
 
-### `worker.init()`
+### `async worker.init()`
 Hook point to initialize your worker. Must be overridden to be useful! For example, launch your server here.
 
-### `worker.prepareForShutdown(canAsync)`
+### `async worker.prepareForShutdown()`
 Hook to start shutting down your worker. Useful for shutting down servers gracefully.
-* `canAsync` – Whether you may perform async operations or not, depending on the shutdown signal.
 
-Note: When overriding this function, you should call `this.shutdown()` when you have finished with your shutdown proceedures. 
+Note: When overriding this function, you should call `this.shutdown()` when you have finished with your shutdown procedures. 
 
 ### `worker.shutdown()`
 Hook to really exit the process. Generally, you need not override this function.

@@ -46,7 +46,7 @@ class OkanjoBroker extends EventEmitter {
      */
     _log() {
         if (this.debug) {
-            console.error.apply(null, Array.prototype.splice(null, arguments));
+            console.error.apply(null, Array.prototype.splice(null, arguments)); // eslint-disable-line no-console
         }
     }
 
@@ -93,7 +93,7 @@ class OkanjoBroker extends EventEmitter {
 
             if (!this.app.gracefulShutdown && !this.drainOpen) {
 
-                if (worker.suicide === true) {
+                if (worker.exitedAfterDisconnect === true) {
                     // Death was intentional, so don't spawn again
                     this.emit('worker_ended', { id, code, signal, worker });
                 } else {
