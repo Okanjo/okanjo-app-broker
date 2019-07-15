@@ -44,13 +44,24 @@ class OkanjoWorker {
      * Monitors for process events and intercepts signals to try to graceful shutdown (hook point)
      */
     _bindProcessSignals() {
-        process.on('SIGINT', () => {
-            this.prepareForShutdown(false);
-        });
+        this._signalHandlers = {
+            SIGINT: () => {
+                this.prepareForShutdown(false);
+            },
+            SIGTERM: () => { // ubuntu shutdown / restart
+                this.prepareForShutdown(false);
+            }
+        };
+        process.on('SIGINT', this._signalHandlers.SIGINT);
+        process.on('SIGTERM', this._signalHandlers.SIGTERM);
+    }
 
-        process.on('SIGTERM', () => { // ubuntu shutdown / restart
-            this.prepareForShutdown(false);
-        });
+    /**
+     * Removes the process event handlers, which could allow a worker to hold open the process
+     */
+    unbindProcessSignals() {
+        process.removeListener('SIGINT', this._signalHandlers.SIGINT);
+        process.removeListener('SIGTERM', this._signalHandlers.SIGTERM);
     }
 
     //noinspection JSUnusedLocalSymbols
@@ -63,6 +74,7 @@ class OkanjoWorker {
         // e.g. this.web.stop(this.shutdown.bind(this));
         //      ^ might stop HAPI and then when dead, call shutdown to end the process
 
+        this.unbindProcessSignals();
         this.shutdown();
     }
 

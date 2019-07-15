@@ -1,6 +1,6 @@
 {
   "name": "okanjo-app-broker",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Service broker for managing cluster groups",
   "main": "OkanjoBroker.js",
   "scripts": {
