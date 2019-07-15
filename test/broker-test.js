@@ -1,3 +1,5 @@
+const log = require('why-is-node-running'); // should be your first require
+
 const should = require('should'),
     OkanjoApp = require('okanjo-app'),
     cluster = require('cluster');
@@ -26,6 +28,10 @@ if (cluster.isMaster) {
     }
 
     describe('Broker', function() {
+
+        after(() => {
+            log() // logs out active handles that are keeping node running
+        });
 
         const OkanjoBroker = require('../OkanjoBroker');
 
@@ -884,6 +890,10 @@ if (cluster.isMaster) {
 
         describe('Worker ' + cluster.worker.id, function () {
 
+            after(() => {
+                log() // logs out active handles that are keeping node running
+            });
+
             let shutdown;
             const ack = function () {
                 // Tell the broker we're alive
@@ -917,7 +927,6 @@ if (cluster.isMaster) {
                     throw new Error('Dunno what this message is or why i received it');
                 }
             });
-
 
             it('should have the basic process info', function () {
                 // We should always have an env set, even if it's "default"

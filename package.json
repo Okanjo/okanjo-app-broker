@@ -1,6 +1,6 @@
 {
   "name": "okanjo-app-broker",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Service broker for managing cluster groups",
   "main": "OkanjoBroker.js",
   "scripts": {
@@ -30,7 +30,8 @@
     "mocha": "^6.0.2",
     "nyc": "^13.3.0",
     "okanjo-app": "^2.0.0",
-    "should": "^13.2.3"
+    "should": "^13.2.3",
+    "why-is-node-running": "^2.1.0"
   },
   "peerDependencies": {
     "okanjo-app": ">=2"

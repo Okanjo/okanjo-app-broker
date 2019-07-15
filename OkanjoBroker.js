@@ -67,9 +67,25 @@ class OkanjoBroker extends EventEmitter {
         }
 
         // Activate recycling program to keep things tidy (e.g. whack memory, etc)
+        this._startRecycler();
+    }
+
+    /**
+     * Starts the recycler, which terminates workers after an interval
+     * @private
+     */
+    _startRecycler() {
         if (this.recycleRate && this.recycleRate > 0) {
-            setInterval(() => this.recycleWorkers(), this.recycleRate);
+            this._recyclerInterval = setInterval(() => this.recycleWorkers(), this.recycleRate);
         }
+    }
+
+    /**
+     * Stops the recycler from running
+     * @private
+     */
+    _stopRecycler() {
+        clearInterval(this._recyclerInterval);
     }
 
     /**
@@ -203,6 +219,7 @@ class OkanjoBroker extends EventEmitter {
      */
     drainWorkers() {
         this.drainOpen = true;
+        this._stopRecycler();
         this.recycleWorkers();
     }
 
@@ -216,6 +233,9 @@ class OkanjoBroker extends EventEmitter {
         for (let i = this._workerIds[this.type].length; i < this.workerCount; i++) {
             this._spawnWorker();
         }
+
+        // Resume recycler
+        this._startRecycler();
     }
 }
 
