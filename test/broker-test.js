@@ -1,14 +1,23 @@
-const log = require('why-is-node-running'); // should be your first require
+"use strict";
 
-const should = require('should'),
-    OkanjoApp = require('okanjo-app'),
-    cluster = require('cluster');
+const why = require('why-is-node-running'); // should be your first require
+const should = require('should');
+const OkanjoApp = require('okanjo-app');
+const cluster = require('cluster');
+const { describe, it, after } = require('mocha');
 
 
-const debugEnabled = true; // <---- change this to true if something is blowing up and you need to walk the path
+const debugEnabled = !!process.env.VERBOSE;
+const logEnabled = !!process.env.WHY
 function debug() {
     if (debugEnabled) {
         console.error(Array.from(arguments));
+    }
+}
+
+function log() {
+    if (logEnabled) {
+        why();
     }
 }
 
@@ -30,7 +39,7 @@ if (cluster.isMaster) {
     describe('Broker', function() {
 
         after(() => {
-            log() // logs out active handles that are keeping node running
+            log(); // logs out active handles that are keeping node running
         });
 
         const OkanjoBroker = require('../OkanjoBroker');
@@ -103,7 +112,7 @@ if (cluster.isMaster) {
             broker._workerIds.basic.should.be.an.Array();
         });
 
-        it('should handle basic usage scenario with default options', function(done) {
+        it('should handle basic usage with default options', function(done) {
 
             /*
 
@@ -385,9 +394,6 @@ if (cluster.isMaster) {
         });
 
         it('will force kill a hung worker', function(done) {
-
-            this.timeout(12000);
-
             /*
 
              So where's what's going to happen.
@@ -449,9 +455,6 @@ if (cluster.isMaster) {
         });
 
         it('will force kill a worker whos doing network stuff', function(done) {
-
-            this.timeout(12000);
-
             /*
 
              So where's what's going to happen.
@@ -688,12 +691,9 @@ if (cluster.isMaster) {
         });
 
         it('should recycle workers on specified interval', function(done) {
-
-            this.timeout(5000);
-
             const app = new OkanjoApp({}),
                 broker = new OkanjoBroker(app, "recycle", {
-                    recycleRate: 1000
+                    recycleRate: 2100
                 });
 
             const state = {
@@ -781,7 +781,6 @@ if (cluster.isMaster) {
         });
 
         it('should be able to resume working after draining', function(done) {
-            this.timeout(10000);
 
             const app = new OkanjoApp({}),
                 broker = new OkanjoBroker(app, "recycle", {});
@@ -891,7 +890,7 @@ if (cluster.isMaster) {
         describe('Worker ' + cluster.worker.id, function () {
 
             after(() => {
-                log() // logs out active handles that are keeping node running
+                log(); // logs out active handles that are keeping node running
             });
 
             let shutdown;
@@ -937,7 +936,6 @@ if (cluster.isMaster) {
             });
 
             it('should end when told to do so', function (done) {
-                this.timeout(12000);
                 shutdown = done;
             });
 
@@ -991,7 +989,7 @@ if (cluster.isMaster) {
                             debug('got server err', err);
                         });
 
-                        debug('did listen')
+                        debug('did listen');
                     });
 
                     break;

@@ -1,9 +1,10 @@
 "use strict";
 
-const should = require('should'),
-    OkanjoApp = require('okanjo-app'),
-    cluster = require('cluster'),
-    OkanjoBroker = require('../OkanjoBroker');
+const should = require('should');
+const OkanjoApp = require('okanjo-app');
+const cluster = require('cluster');
+const OkanjoBroker = require('../OkanjoBroker');
+const { describe, it } = require('mocha');
 
 if (cluster.isMaster) {
 
@@ -344,7 +345,7 @@ if (cluster.isMaster) {
                 worker.shutdown = function() {
                     done();
                     OkanjoBroker.OkanjoWorker.prototype.shutdown.call(this);
-                }
+                };
 
             });
 

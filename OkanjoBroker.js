@@ -18,11 +18,11 @@ class OkanjoBroker extends EventEmitter {
         super();
 
         // Verify we have an active application context
-        if (Object.getPrototypeOf(app || {}).constructor.name !== "OkanjoApp") {
+        if (!app) {
             throw new Error(`You need to provide the current app context when making a broker. Got: ${Object.getPrototypeOf(app || {}).constructor.name}`);
-        } else {
-            this.app = app;
         }
+
+        this.app = app;
 
         if (!options) {
             options = {};
@@ -206,7 +206,7 @@ class OkanjoBroker extends EventEmitter {
     recycleWorkers() {
         // Iterate over the cluster workers but only bounce the ones that belong to this broker
         for (let id in Cluster.workers) {
-            if (Cluster.workers.hasOwnProperty(id) && this._workerIds[this.type].indexOf(id) >= 0) {
+            if (Cluster.workers[id] && this._workerIds[this.type].indexOf(id) >= 0) {
                 this._bounceWorker(id);
             } else {
                 this._log(this.type + ': recycle worker with id='+ id +' not found');
