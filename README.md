@@ -21,6 +21,8 @@ npm install okanjo-app-broker
 Note: requires the [`okanjo-app`](https://github.com/okanjo/okanjo-app) module.
 
 ## Breaking Changes
+ * v3.0.0
+   * Updated okanjo-app version requirement (v3.0.0+)
  * v2.0.0
    * Updated base OkanjoWorker methods `init` and `prepareForShutdown` to be async functions
 
@@ -205,9 +207,14 @@ This will perform:
 * Code linting
 
 Sometimes, that's overkill to quickly test a quick change. To run just the unit tests:
- 
+
 ```sh
 npm test
+```
+
+If you need to get into the weeds, you can enable verbose logging and why-is-node-running logs
+```sh
+VERBOSE=1 WHY=1 npm test
 ```
 
 or if you have mocha installed globally, you may run `mocha test` instead.
