@@ -1,6 +1,6 @@
 # Okanjo Service Broker
 
-[![Build Status](https://travis-ci.org/Okanjo/okanjo-app-broker.svg?branch=master)](https://travis-ci.org/Okanjo/okanjo-app-broker) [![Coverage Status](https://coveralls.io/repos/github/Okanjo/okanjo-app-broker/badge.svg?branch=master)](https://coveralls.io/github/Okanjo/okanjo-app-broker?branch=master)
+[![Node.js CI](https://github.com/Okanjo/okanjo-app-broker/actions/workflows/node.js.yml/badge.svg)](https://github.com/Okanjo/okanjo-app-broker/actions/workflows/node.js.yml) [![Coverage Status](https://coveralls.io/repos/github/Okanjo/okanjo-app-broker/badge.svg?branch=master)](https://coveralls.io/github/Okanjo/okanjo-app-broker?branch=master)
 
 Scalable and reliable worker management, that:
 
